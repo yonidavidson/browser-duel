@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>three experiments — card</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      body {
+        width: 1200px;
+        height: 675px;
+        overflow: hidden;
+        background:
+          radial-gradient(900px 500px at 85% -10%, rgba(70, 215, 255, 0.12), transparent 60%),
+          radial-gradient(700px 450px at -10% 20%, rgba(255, 92, 200, 0.10), transparent 55%),
+          #05070d;
+        color: #dbe4ff;
+        font: 20px/1.45 "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+        padding: 44px 48px;
+        border: 1px solid #17213c;
+      }
+      h1 {
+        font-size: 38px;
+        font-weight: 800;
+        letter-spacing: -0.01em;
+        background: linear-gradient(92deg, #46d7ff, #ff5cc8);
+        -webkit-background-clip: text;
+        background-clip: text;
+        color: transparent;
+      }
+      .sub { color: #7d89ad; font-size: 19px; margin-top: 6px; }
+      .grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px; margin-top: 30px; }
+      .card {
+        border: 1px solid #17213c;
+        border-radius: 14px;
+        padding: 20px;
+        background: linear-gradient(180deg, rgba(13, 21, 42, 0.95), rgba(7, 11, 21, 0.95));
+        min-height: 350px;
+      }
+      .card h2 { font-size: 24px; margin-bottom: 4px; }
+      .card .tag { color: #7d89ad; font-size: 15px; margin-bottom: 16px; }
+      .metric { font-family: ui-monospace, Menlo, monospace; font-size: 17px; margin-bottom: 10px; }
+      .metric b { color: #46d7ff; }
+      .metric.green b { color: #52e08f; }
+      .metric.pink b { color: #ff5cc8; }
+      .note { color: #7d89ad; font-size: 15px; margin-top: 14px; }
+      footer {
+        margin-top: 26px;
+        padding-top: 16px;
+        border-top: 1px solid #17213c;
+        color: #7d89ad;
+        font-family: ui-monospace, Menlo, monospace;
+        font-size: 17px;
+        display: flex;
+        justify-content: space-between;
+      }
+      footer b { color: #dbe4ff; font-weight: 600; }
+    </style>
+  </head>
+  <body>
+    <h1>Three experiments: small typed AI decisions vs full LLMs</h1>
+    <div class="sub">Same tasks, same data, measured — where does a fast decision model win, and where does it not?</div>
+
+    <div class="grid">
+      <div class="card">
+        <h2>🔤 subtext</h2>
+        <div class="tag">pub/sub where subscriptions are written in English</div>
+        <div class="metric">one TypeSafe request per message · <b>13 judgments</b></div>
+        <div class="metric">semantic routing beats the lexical mock on every hard case</div>
+        <div class="metric green">9 messages · <b>$0.0004</b> · ~440 ms/message</div>
+        <div class="note">deliver / review / drop — thresholds you can drag.</div>
+      </div>
+
+      <div class="card">
+        <h2>📡 radio-vision</h2>
+        <div class="tag">name the modulation from 128 raw IQ samples</div>
+        <div class="metric">11 modulations · AWGN at <b>any SNR</b> (−20…+30 dB)</div>
+        <div class="metric">14-feature representation → 7-NN classifier</div>
+        <div class="metric green">receiver: <b>70%</b> modulation · <b>96%</b> group at +30 dB</div>
+        <div class="note">confusions land exactly on the thesis families (8PSK↔QPSK, QAM16↔64, CPFSK↔GFSK).</div>
+      </div>
+
+      <div class="card">
+        <h2>⚔️ browser-duel</h2>
+        <div class="tag">Jev vs GPT-5.6: who picks better links in a wiki race?</div>
+        <div class="metric">Jev <b>$0.00012</b> · <b>~0.4 s</b> per decision</div>
+        <div class="metric">gpt-5.6-sol <b>$0.0035</b> · <b>~4.7 s</b> per decision</div>
+        <div class="metric green">easy task: all tie (2 clicks) · hard task: <b>GPT 5–8 clicks, Jev gives up</b></div>
+        <div class="note">hybrid (Jev, escalating when unsure) — the confidence gate is the next story.</div>
+      </div>
+    </div>
+
+    <footer>
+      <span><b>github.com/yonidavidson</b> · subtext · radio-vision · browser-duel</span>
+      <span>all MIT · all local</span>
+    </footer>
+  </body>
+</html>
