@@ -1,0 +1,20 @@
+{
+  "name": "browser-duel",
+  "version": "0.1.0",
+  "description": "LLM vs TypeSafe Jev: who picks better links in a Wikipedia race?",
+  "type": "module",
+  "private": true,
+  "engines": {
+    "node": ">=22.18"
+  },
+  "license": "MIT",
+  "author": "Yoni Davidson",
+  "scripts": {
+    "duel": "node src/run.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "@types/node": "^24.0.0",
+    "typescript": "^5.9.0"
+  }
+}
