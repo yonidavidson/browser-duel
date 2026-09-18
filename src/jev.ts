@@ -55,7 +55,10 @@ export function jevDriver(): Driver {
         throw new Error(`typesafe ${response.status}: ${(await response.text()).slice(0, 200)}`);
       }
       const data = (await response.json()) as {
-        answers: Record<string, { choice: string; probabilities: Record<string, number>; noul?: number }>;
+        answers: Record<
+          string,
+          { choice: string; probabilities: Record<string, number>; confidence?: number; noul?: number }
+        >;
         usage?: { input_tokens: number; output_tokens: number };
       };
       const latencyMs = performance.now() - started;
@@ -63,6 +66,7 @@ export function jevDriver(): Driver {
       const inputTokens = data.usage?.input_tokens ?? 0;
       const outputTokens = data.usage?.output_tokens ?? 0;
       const id = answer.choice;
+      const confidence = answer.confidence ?? answer.probabilities[id] ?? 0;
       return {
         id,
         stopped: id === "none",
@@ -70,7 +74,8 @@ export function jevDriver(): Driver {
         inputTokens,
         outputTokens,
         costUsd: cost("jev", inputTokens, outputTokens),
-        note: `p=${(answer.probabilities[id] ?? 0).toFixed(2)} reached=${(data.answers.goal_reached?.noul ?? 0).toFixed(2)}`,
+        confidence,
+        note: `p=${(answer.probabilities[id] ?? 0).toFixed(2)} conf=${confidence.toFixed(2)} reached=${(data.answers.goal_reached?.noul ?? 0).toFixed(2)}`,
       };
     },
   };

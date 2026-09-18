@@ -17,6 +17,10 @@ export interface Decision {
   outputTokens: number;
   costUsd: number;
   note?: string;
+  /** the primary decider's confidence, when it reports one (Jev does) */
+  confidence?: number;
+  /** true when a fallback model had to decide this step */
+  escalated?: boolean;
 }
 
 export interface Driver {
