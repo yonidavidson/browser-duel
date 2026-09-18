@@ -36,7 +36,7 @@ Two more experiments in the same repo set:
 🔤 subtext — semantic pub/sub in plain English
 📡 radio-vision — classify radio modulations from raw IQ, with a measured accuracy-vs-SNR curve
 
-All MIT: github.com/yonidavidson
+All local: github.com/yonidavidson
 
 ## Link list
 

@@ -133,5 +133,3 @@ src/run.ts       tasks, tables, flags
 - Jev's instructions were tuned once after the first run (it answered "none" immediately);
   the guidance is generic ("avoid meta pages"), not answer-leaking.
 - Runs are single samples on a live web; Wikipedia's link set changes over time.
-
-MIT
