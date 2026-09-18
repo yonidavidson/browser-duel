@@ -12,6 +12,7 @@ export interface StepLog {
   outputTokens: number;
   costUsd: number;
   note: string;
+  escalated: boolean;
 }
 
 export interface RaceResult {
@@ -20,6 +21,7 @@ export interface RaceResult {
   gaveUp: boolean;
   stuck: boolean;
   clicks: number;
+  escalations: number;
   wallMs: number;
   decisionMs: number;
   inputTokens: number;
@@ -82,6 +84,7 @@ export async function race(driver: Driver, options: RaceOptions): Promise<RaceRe
       outputTokens: decision.outputTokens,
       costUsd: decision.costUsd,
       note: decision.note ?? "",
+      escalated: decision.escalated ?? false,
     });
 
     if (decision.stopped || !chosen) {
@@ -103,6 +106,7 @@ export async function race(driver: Driver, options: RaceOptions): Promise<RaceRe
     gaveUp,
     stuck,
     clicks: log.filter((entry) => entry.choiceId !== "none").length,
+    escalations: log.filter((entry) => entry.escalated).length,
     wallMs: Date.now() - startedAt,
     decisionMs: log.reduce((total, entry) => total + entry.latencyMs, 0),
     inputTokens: log.reduce((total, entry) => total + entry.inputTokens, 0),

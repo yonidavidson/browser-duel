@@ -1,3 +1,4 @@
+import { hybridDriver } from "./hybrid.ts";
 import { jevDriver } from "./jev.ts";
 import { openaiDriver } from "./openai.ts";
 import { race } from "./race.ts";
@@ -35,13 +36,16 @@ const TASKS: Task[] = [
 const args = process.argv.slice(2);
 const driversArg = args.find((arg) => arg.startsWith("--drivers="))?.split("=")[1];
 const tasksArg = args.find((arg) => arg.startsWith("--tasks="))?.split("=")[1];
-const wantedDrivers = driversArg ? driversArg.split(",") : ["jev", "luna", "sol"];
+const thresholdArg = Number(args.find((arg) => arg.startsWith("--threshold="))?.split("=")[1]);
+const hybridThreshold = Number.isFinite(thresholdArg) ? thresholdArg : 0.5;
+const wantedDrivers = driversArg ? driversArg.split(",") : ["jev", "luna", "sol", "hybrid"];
 const wantedTasks = tasksArg ? tasksArg.split(",") : ["easy", "hard"];
 
 const driverFactories: Record<string, () => Driver> = {
   jev: jevDriver,
   luna: () => openaiDriver(LUNA),
   sol: () => openaiDriver(SOL),
+  hybrid: () => hybridDriver({ threshold: hybridThreshold, fallback: openaiDriver(LUNA) }),
 };
 const drivers = wantedDrivers
   .filter((key) => key in driverFactories)
@@ -57,7 +61,7 @@ function summarize(result: RaceResult): string {
         : "⏱ max steps";
   return (
     `| ${result.driver} | ${status} ` +
-    `| ${result.clicks} | ${(result.wallMs / 1000).toFixed(1)} s | ${(result.decisionMs / 1000).toFixed(1)} s ` +
+    `| ${result.clicks} | ${result.escalations} | ${(result.wallMs / 1000).toFixed(1)} s | ${(result.decisionMs / 1000).toFixed(1)} s ` +
     `| ${result.inputTokens.toLocaleString("en-US")} / ${result.outputTokens.toLocaleString("en-US")} | $${result.costUsd.toFixed(6)} |`
   );
 }
@@ -91,8 +95,8 @@ for (const task of TASKS.filter((candidate) => wantedTasks.includes(candidate.ke
 }
 
 console.log("\n## Results\n");
-console.log("| task | driver | result | clicks | wall | deciding | tokens in/out | cost |");
-console.log("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: |");
+console.log("| task | driver | result | clicks | escalated | wall | deciding | tokens in/out | cost |");
+console.log("| --- | --- | --- | ---: | ---: | ---: | ---: | ---: | ---: |");
 for (const { task, results } of combined) {
   for (const result of results) {
     console.log(`| ${task.key} ${summarize(result)}`);
